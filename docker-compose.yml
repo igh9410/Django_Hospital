@@ -12,6 +12,8 @@ services:
       - POSTGRES_PASSWORD=testpassword
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
+    volumes:
+      - ./static:/app/static
   postgres:
     container_name: django_hospital_postgres
     image: postgres:15.5-alpine

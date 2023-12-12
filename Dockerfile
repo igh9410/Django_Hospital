@@ -24,21 +24,28 @@ COPY . /app/
 # Test Phase
 RUN poetry run python manage.py test
 
+# Collect Static
+RUN poetry run python manage.py collectstatic --noinput
+
+
 # Stage 2: Runtime
 FROM python:3.10-slim as build-release-stage
 
 WORKDIR /app
 
 # Copy installed dependencies from the build stage
-COPY --from=build-stage /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
-COPY --from=build-stage /usr/local/bin /usr/local/bin
-COPY --from=build-stage /app /app
+COPY --from=build-stage --chown=myuser:myuser /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=build-stage --chown=myuser:myuser /usr/local/bin /usr/local/bin
+COPY --from=build-stage --chown=myuser:myuser /app /app
 
-EXPOSE 8000
 
 # Add and run as non-root user
 RUN useradd -m myuser
 USER myuser
+
+
+EXPOSE 8000
+
 
 # Command to run the application
 CMD ["gunicorn", "django_hospital.wsgi:application", "--bind", "0.0.0.0:8000"]

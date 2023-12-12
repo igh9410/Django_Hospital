@@ -46,6 +46,8 @@ THIRD_PARTY_APPS = [ ## Third party libraries and packages
 
 CUSTOM_APPS = [ # Application packages
     'patients',
+    'doctors',
+    'appointments',
 ]
 
 INSTALLED_APPS = SYSTEM_APPS + THIRD_PARTY_APPS + CUSTOM_APPS # All application packages
@@ -62,6 +64,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'django_hospital.urls'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') # Collect static
+
 
 TEMPLATES = [
     {
