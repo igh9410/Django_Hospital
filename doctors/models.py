@@ -27,13 +27,20 @@ class WorkingHour(models.Model):
         ('Saturday', 'Saturday'),
         ('Sunday', 'Sunday'),
     ]
+    
+    class Meta:
+        unique_together = ('doctor', 'day_of_week')
+
+
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='working_hours')
     day_of_week = models.CharField(max_length=9, choices=DAYS_OF_WEEK)
     start_time = models.TimeField()
+    break_start_time = models.TimeField(null=True, blank=True) # break time can be omitted 
+    break_end_time = models.TimeField(null=True, blank=True) # break time can be omitted
     end_time = models.TimeField()
 
     def __str__(self):
-        return f"{self.doctor.name} - {self.day_of_week} {self.start_time} to {self.end_time}"
+        return f"{self.doctor.name} - {self.day_of_week} {self.start_time} to {self.end_time} break time: {self.break_start_time} to {self.break_end_time}"
 
 
 

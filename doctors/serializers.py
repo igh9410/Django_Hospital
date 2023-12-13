@@ -13,6 +13,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'hospital', 'specialties']
 
     def get_specialties(self, obj):
-        return [specialty.name for specialty in obj.specialties.all()]
+        return [specialty.name for specialty in obj.specialties.all()] # Retrieve specialities by name, not primary key which is integer
+    
     
    

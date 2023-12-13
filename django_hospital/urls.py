@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from appointments.views import AppointmentViewSet
 
 from doctors.views import DoctorViewSet
 
@@ -27,5 +28,5 @@ urlpatterns =[
         path('search-by-string/', DoctorViewSet.as_view({'get': 'search_doctors_by_string'}), name='doctor-search-by-string'),
         path('search-by-datetime/', DoctorViewSet.as_view({'get': 'search_doctors_by_datetime'}), name='doctor-search-by-datetime'),
     ])),
-
+    path('api/appointments/', AppointmentViewSet.as_view({'post': 'create'}), name='appointment-request-create')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

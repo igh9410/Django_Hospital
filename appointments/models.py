@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from doctors.models import Doctor
 
@@ -10,6 +11,8 @@ class AppointmentRequest(models.Model):
         ('accepted', 'Accepted'),
         ('declined', 'Declined'),
     )
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     preferred_datetime = models.DateTimeField()

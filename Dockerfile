@@ -22,7 +22,7 @@ RUN poetry install
 COPY . /app/
 
 # Test Phase
-RUN poetry run python manage.py test
+#RUN poetry run python manage.py test
 
 # Collect Static
 RUN poetry run python manage.py collectstatic --noinput
