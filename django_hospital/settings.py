@@ -42,6 +42,7 @@ SYSTEM_APPS = [ # Django Default packages
 
 THIRD_PARTY_APPS = [ ## Third party libraries and packages
     'rest_framework',
+    'drf_yasg',
 ]
 
 CUSTOM_APPS = [ # Application packages

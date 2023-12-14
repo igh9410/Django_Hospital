@@ -17,10 +17,22 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
 from appointments.views import AppointmentViewSet
 from doctors.views import DoctorViewSet
 
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Django Hospital API",
+        default_version='v1',
+        description="API documentation for hostpital and patients management API written in Django REST",
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns =[  
     path('admin/', admin.site.urls),
@@ -32,4 +44,7 @@ urlpatterns =[
         'post': 'create',
         'get': 'list_doctor_requests' 
     })), path('api/appointments/<uuid:appointment_request_id>/accept/', AppointmentViewSet.as_view({'patch': 'accept_appointment_request'}), name='accept-appointment'),
+    re_path(r'^swagger(?P<format>\\.json|\\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'), ## OpenAPI urls
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'), # Swagger UI page 
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'), # ReDoc UI page
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
