@@ -91,4 +91,40 @@ class AppointmentRequestServiceTest(TestCase):
         )
         print("result = ", result)
         # Make assertions based on your expected outcomes
-       # self.assertIn('error', result) # Adjust this according to expected result
+        self.assertEqual(result['patient_name'], '김환자')
+        self.assertEqual(result['doctor_name'], '김의사')
+        self.assertEqual(result['preferred_datetime'], '2022-01-18T10:00:00+09:00')
+        self.assertEqual(result['request_expiration_datetime'], '2022-01-17T09:15:00+09:00')
+        
+    '''
+    def test_appointment_request_service_with_breaktime(self): ## Testing with multiple request time, like night hours, holiday
+        # Verify that Doctor and WorkingHour objects are created
+        self.assertEqual(Doctor.objects.count(), 1)
+        self.assertEqual(WorkingHour.objects.count(), 5)
+
+        # Verify the attributes of the created Doctor
+        doctor = Doctor.objects.first()
+        self.assertEqual(doctor.name, "김의사")
+        self.assertEqual(doctor.hospital, "서울대병원")
+
+        # Verify the WorkingHour is linked to the Doctor
+       
+        # Create an arbitrary datetime for request
+        preferred_datetime = timezone.make_aware(datetime(2022, 1, 18, 10, 0))
+        request_datetime = timezone.make_aware(datetime(2022, 1, 15, 1, 0))
+        print("WorkingHour: ", self.working_hour)
+
+        # Call your service function with this arbitrary datetime
+        result = create_appointment_request_service(
+            patient_id=self.patient.id, 
+            doctor_id=self.doctor.id, 
+            preferred_datetime=preferred_datetime, 
+            request_datetime=request_datetime
+        )
+        print("result = ", result)
+        # Make assertions based on your expected outcomes
+        self.assertEqual(result['patient_name'], '김환자')
+        self.assertEqual(result['doctor_name'], '김의사')
+        self.assertEqual(result['preferred_datetime'], '2022-01-18T10:00:00+09:00')
+        self.assertEqual(result['request_expiration_datetime'], '2022-01-17T09:15:00+09:00')
+    '''

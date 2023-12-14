@@ -3,8 +3,9 @@ import datetime
 import logging
 from django.utils import timezone
 from django.db import IntegrityError
-from appointments.serializers import AppointmentResponseSerializer
+from appointments.serializers import AppointmentResponseSerializer, AppointmentRequestAcceptSerializer
 from doctors.models import Doctor, WorkingHour
+from django.core.exceptions import ObjectDoesNotExist
 from .models import AppointmentRequest
 from django_hospital.utils import weekday_mapping
 
@@ -123,3 +124,31 @@ def find_next_working_period_start(request_datetime, doctor_schedule):
 
     # If no working time is found, return None
     return None
+
+def get_appointment_request_list(doctor_id):
+    try:
+        appointments = AppointmentRequest.objects.filter(doctor_id=doctor_id).exclude(status='accepted')
+        serializer = AppointmentResponseSerializer(appointments, many=True)
+        return serializer.data
+    except Exception as e:
+        logging.error(f"An error occurred while retrieving appointment requests for doctor_id {doctor_id}: {str(e)}")
+        return {"error": "An error occured while retrieving appointment requests"}
+    
+
+def update_appointment_request_status(appointment_request_id, new_status, request_datetime:None): # request_datetime sends from views as current time value
+    try:
+        appointment_request = AppointmentRequest.objects.get(id=appointment_request_id)
+        appoinment_request_expiration = appointment_request.request_expiration_datetime # Extract Request Expiration datetime to compare with the time the request is made
+        
+        if request_datetime > appoinment_request_expiration: # Check whether the appointment request is expired or not
+            return {"error": "Appointment request expired"}
+             
+        if appointment_request.status != 'accepted': # Check whether the appointment request is already accepted or not           
+           appointment_request.status = new_status # Set appoinment status to 'accepted'
+           appointment_request.save()
+           serializer = AppointmentRequestAcceptSerializer(appointment_request)
+           return serializer.data
+        else:
+            return {"error": "Appointment request already accepted"}
+    except ObjectDoesNotExist:
+        return {"error": "Appointment request not found"}
