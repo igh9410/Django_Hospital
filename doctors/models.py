@@ -8,16 +8,24 @@ class Specialty(models.Model):
     def __str__(self):
         return self.name
 
+class NonReimbursement(models.Model): ## 비급여
+    name = models.CharField(max_length=100, unique=True, db_index=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Doctor(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, db_index=True)
     hospital = models.CharField(max_length=100, db_index=True, default="")
     specialties = models.ManyToManyField(Specialty)
+    non_reimbursements = models.ManyToManyField(NonReimbursement)
 
     def __str__(self):
         return self.name
 
-class WorkingHour(models.Model):
+class WorkingHour(models.Model): # 업무 시간
     DAYS_OF_WEEK = [
         ('Monday', 'Monday'),
         ('Tuesday', 'Tuesday'),
@@ -41,7 +49,6 @@ class WorkingHour(models.Model):
 
     def __str__(self):
         return f"{self.doctor.name} - {self.day_of_week} {self.start_time} to {self.end_time} break time: {self.break_start_time} to {self.break_end_time}"
-
 
 
 

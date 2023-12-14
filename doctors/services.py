@@ -12,7 +12,7 @@ def search_doctors_by_string(query):
 
     for term in query_terms:
         # Build a query for the current term
-        term_query = Q(name__icontains=term) | Q(specialties__name__icontains=term) | Q(hospital__icontains=term)
+        term_query = Q(name__icontains=term) | Q(specialties__name__icontains=term) | Q(hospital__icontains=term) | Q(non_reimbursements__name__icontains=term)
         combined_query &= term_query  # Combine with the main query using logical AND
     
     return Doctor.objects.filter(combined_query).distinct()
