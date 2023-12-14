@@ -48,45 +48,58 @@ b. 날짜별 검색: GET http://localhost:8000/api/doctors/search-by-datetime/?d
 
 진료요청  
 POST /api/appointments/  
-HTTP Body (JSON):  
-{
-"patient_id": "patient_id(UUID)",
-"doctor_id": "doctor_id(UUID)",
-"preferred_datetime": "datetime (2023-12-14 01:00:00)"
-}
+HTTP Body (JSON):
 
-RETURN  
+```
 {
-"id": "4e61d524-9a5d-11ee-b1e6-571972f7616e",
-"patient_name": "박환자",
-"doctor_name": "김의사",
-"preferred_datetime": "2023-12-18T10:00:00+09:00",
-"request_expiration_datetime": "2023-12-14T18:06:43.268579+09:00"
+    "patient_id": "patient_id(UUID)",
+    "doctor_id": "doctor_id(UUID)",
+    "preferred_datetime": "datetime (2023-12-14 01:00:00)"
 }
+```
+
+RETURN
+
+```
+{
+    "id": "4e61d524-9a5d-11ee-b1e6-571972f7616e",
+    "patient_name": "박환자",
+    "doctor_name": "김의사",
+    "preferred_datetime": "2023-12-18T10:00:00+09:00",
+    "request_expiration_datetime": "2023-12-14T18:06:43.268579+09:00"
+}
+```
 
 진료요청 검색
 GET /api/appointments/{doctor_id}  
 ex) GET http://localhost:8000/api/appointments/?doctor_id=97c8f1f1-4b5f-4b65-9c0f-9a5c39443ee8
 
-RETURN  
+RETURN
+
+```
 [
-{
-"id": "4e61d524-9a5d-11ee-b1e6-571972f7616e",
-"patient_name": "박환자",
-"doctor_name": "김의사",
-"preferred_datetime": "2023-12-18T10:00:00+09:00",
-"request_expiration_datetime": "2023-12-14T18:06:43.268579+09:00"
-}
+    {
+        "id": "4e61d524-9a5d-11ee-b1e6-571972f7616e",
+        "patient_name": "박환자",
+        "doctor_name": "김의사",
+        "preferred_datetime": "2023-12-18T10:00:00+09:00",
+        "request_expiration_datetime": "2023-12-14T18:06:43.268579+09:00"
+    }
 ]
+```
 
 진료요청 수락
 PATCH /api/appointments/{appointment_request_id}/accept/  
 ex) http://localhost:8000/api/appointments/11ceeafc-9a5d-11ee-b1e6-571972f7616e/accept/
 
 RETURN
+
+```
 {
-"id": "11ceeafc-9a5d-11ee-b1e6-571972f7616e",
-"patient_name": "김환자",
-"preferred_datetime": "2023-12-18T10:00:00+09:00",
-"request_expiration_datetime": "2023-12-14T18:05:01.641910+09:00"
+    "id": "11ceeafc-9a5d-11ee-b1e6-571972f7616e",
+    "patient_name": "김환자",
+    "preferred_datetime": "2023-12-18T10:00:00+09:00",
+    "request_expiration_datetime": "2023-12-14T18:05:01.641910+09:00"
 }
+```
+
