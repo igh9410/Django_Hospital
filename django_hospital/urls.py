@@ -36,11 +36,11 @@ schema_view = get_schema_view(
 
 urlpatterns =[  
     path('admin/', admin.site.urls),
-    path('api/doctors/', include([
+    path('api/doctors/', include([ # Doctor API
         path('search-by-string/', DoctorViewSet.as_view({'get': 'search_doctors_by_string'}), name='doctor-search-by-string'),
         path('search-by-datetime/', DoctorViewSet.as_view({'get': 'search_doctors_by_datetime'}), name='doctor-search-by-datetime'),
     ])),
-    path('api/appointments/', AppointmentViewSet.as_view({
+    path('api/appointments/', AppointmentViewSet.as_view({ # Appointment Request API
         'post': 'create',
         'get': 'list_doctor_requests' 
     })), path('api/appointments/<uuid:appointment_request_id>/accept/', AppointmentViewSet.as_view({'patch': 'accept_appointment_request'}), name='accept-appointment'),
