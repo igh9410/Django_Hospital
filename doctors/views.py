@@ -14,7 +14,7 @@ class DoctorViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Doctor.objects.none()  # Returns an empty queryset by default
     
-    @action(detail=False, methods=['get'], url_path='search-by-string')
+    @action(detail=False, methods=['get'], url_path='search-by-string') # Search doctors by name, hospital, specailties, and non-reimbursements
     def search_doctors_by_string(self, request):
         search_query = request.query_params.get('string', None)
         if search_query:
@@ -23,7 +23,7 @@ class DoctorViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
-    @action(detail=False, methods=['get'], url_path='search-by-datetime')
+    @action(detail=False, methods=['get'], url_path='search-by-datetime') # Search available doctors by datetime input, which is mapped to be doctor's working hours
     def search_doctors_by_datetime(self, request):
         datetime_query = request.query_params.get('datetime', None)
         if datetime_query:

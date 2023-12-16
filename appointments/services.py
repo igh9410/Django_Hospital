@@ -3,10 +3,10 @@ import datetime
 import logging
 from django.utils import timezone
 from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
 from appointments.serializers import AppointmentResponseSerializer, AppointmentRequestAcceptSerializer
 from doctors.models import Doctor, WorkingHour
-from django.core.exceptions import ObjectDoesNotExist
-from .models import AppointmentRequest
+from appointments.models import AppointmentRequest
 from django_hospital.utils import weekday_mapping
 
 # Set up basic logging configuration (example)
@@ -100,12 +100,12 @@ def is_during_break(current_time, working_hour):
     return False
 
 def find_next_working_period_start(request_datetime, doctor_schedule):
-    # Logic to find the next working period
-    # ...
     print("find_next request_time: ", request_datetime)
     current_day_index = request_datetime.weekday()  # Monday is 0, Sunday is 6
     print("current_day_index: ", current_day_index)
     print("request_time time: ", request_datetime.time())
+    
+    # Iterate days from Monday to Sunday to find next working day
     for days_ahead in range(7):
         # Calculate the day to check
         next_day_index = (current_day_index + days_ahead) % 7

@@ -32,7 +32,7 @@ class AppointmentViewSet(viewsets.ViewSet):
             if "error" not in result:
                 return Response(result, status=status.HTTP_201_CREATED)
             else:
-                return Response(result, status=status.HTTP_400_BAD_REQUEST)
+                return Response(result, {"error": "Error occuered for creatintg appointment request"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -47,9 +47,9 @@ class AppointmentViewSet(viewsets.ViewSet):
         if "error" not in result:
             return Response(result, status=status.HTTP_200_OK)
         else:
-            return Response(result, status=status.HTTP_400_BAD_REQUEST)
+            return Response(result, {"error": "Error occuered for retrieving the doctor's appointment requests" }, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, method=['patch'])
+    @action(detail=False, methods=['patch'])
     def accept_appointment_request(self, request, appointment_request_id):
         unconverted_datetime = timezone.now()
         seoul_timezone = pytz.timezone('Asia/Seoul')
@@ -60,5 +60,5 @@ class AppointmentViewSet(viewsets.ViewSet):
         if "error" not in result:
             return Response(result, status=status.HTTP_200_OK)
         else:
-            return Response(result, status=status.HTTP_400_BAD_REQUEST)
+            return Response(result, {"error": "Error occuered for updating appointment request status to accepted"}, status=status.HTTP_400_BAD_REQUEST)
 
